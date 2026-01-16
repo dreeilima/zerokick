@@ -1,0 +1,101 @@
+/**
+ * Better Auth Configuration
+ *
+ * Configuração central de autenticação usando Better Auth.
+ * Suporta email/password e Google OAuth.
+ */
+
+import { db, schema } from "@/lib/db";
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import type { GoogleProfile } from "better-auth/social-providers";
+
+// ============================================================================
+// GOOGLE OAUTH CONFIGURATION
+// ============================================================================
+
+const googleClientId = process.env.GOOGLE_CLIENT_ID;
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+
+/**
+ * Extrai nome do usuário do perfil do Google com fallback hierárquico:
+ * 1. profile.name (nome completo)
+ * 2. profile.given_name + profile.family_name
+ * 3. Nome extraído do email
+ * 4. "Usuário" (fallback final)
+ */
+function getNameFromGoogleProfile(profile: GoogleProfile): string {
+  const fullName = profile.name?.trim();
+  if (fullName) return fullName;
+
+  const fromGivenFamily = [profile.given_name, profile.family_name]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+  if (fromGivenFamily) return fromGivenFamily;
+
+  const fromEmail = profile.email
+    ? profile.email.split("@")[0].replace(/[._-]/g, " ")
+    : undefined;
+
+  return fromEmail ?? "Usuário";
+}
+
+// ============================================================================
+// BETTER AUTH INSTANCE
+// ============================================================================
+
+export const auth = betterAuth({
+  // Email/Password authentication
+  emailAndPassword: {
+    enabled: true,
+    autoSignIn: true,
+  },
+
+  // Database adapter (Drizzle + PostgreSQL)
+  database: drizzleAdapter(db, {
+    provider: "pg",
+    schema,
+    camelCase: true,
+  }),
+
+  // Google OAuth (se configurado)
+  socialProviders:
+    googleClientId && googleClientSecret
+      ? {
+          google: {
+            clientId: googleClientId,
+            clientSecret: googleClientSecret,
+            mapProfileToUser: (profile) => ({
+              name: getNameFromGoogleProfile(profile),
+              email: profile.email,
+              image: profile.picture,
+              emailVerified: profile.email_verified,
+            }),
+          },
+        }
+      : undefined,
+
+  // Database hooks - Executados após eventos do DB
+  databaseHooks: {
+    user: {
+      create: {
+        /**
+         * Após criar novo usuário, podemos inicializar dados padrão aqui
+         * Por enquanto, apenas logamos a criação
+         */
+        after: async (user) => {
+          console.log(`[Auth] Novo usuário criado: ${user.email}`);
+          // TODO: Criar licença trial padrão para novos usuários
+        },
+      },
+    },
+  },
+});
+
+// Aviso em desenvolvimento se Google OAuth não estiver configurado
+if (!googleClientId && process.env.NODE_ENV === "development") {
+  console.warn(
+    "[Auth] Google OAuth não configurado. Defina GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET."
+  );
+}

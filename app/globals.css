@@ -1,0 +1,264 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --spacing-custom-height-1: 28rem;
+}
+
+:root {
+  /* Base surfaces - clean neutral with slight cool tint */
+  --background: oklch(98% 0.002 240);
+  --foreground: oklch(15% 0.01 240);
+  --card: oklch(100% 0.001 240);
+  --card-foreground: oklch(15% 0.01 240);
+  --popover: oklch(99% 0.002 240);
+  --popover-foreground: oklch(15% 0.01 240);
+
+  /* Primary - Electric Cyan (gaming signature color) */
+  --primary: oklch(65% 0.19 210);
+  --primary-foreground: oklch(98% 0.002 240);
+
+  /* Secondary - Deep Purple */
+  --secondary: oklch(45% 0.15 290);
+  --secondary-foreground: oklch(98% 0.002 240);
+
+  /* Muted - Subtle gray-blue */
+  --muted: oklch(94% 0.008 240);
+  --muted-foreground: oklch(45% 0.01 240);
+
+  /* Accent - Neon Purple */
+  --accent: oklch(60% 0.18 300);
+  --accent-foreground: oklch(98% 0.002 240);
+
+  /* Destructive - Vibrant Red */
+  --destructive: oklch(55% 0.22 25);
+  --destructive-foreground: oklch(98% 0.002 240);
+
+  /* Borders and inputs */
+  --border: oklch(88% 0.01 240);
+  --input: oklch(82% 0.008 240);
+  --ring: oklch(65% 0.19 210);
+
+  /* Charts - Gaming themed colors */
+  --chart-1: oklch(65% 0.19 210); /* Cyan */
+  --chart-2: oklch(60% 0.18 300); /* Purple */
+  --chart-3: oklch(62% 0.2 160); /* Green */
+  --chart-4: oklch(68% 0.21 45); /* Orange */
+  --chart-5: oklch(70% 0.18 330); /* Pink */
+
+  /* Sidebar */
+  --sidebar: oklch(96% 0.004 240);
+  --sidebar-foreground: oklch(20% 0.01 240);
+  --sidebar-primary: oklch(65% 0.19 210);
+  --sidebar-primary-foreground: oklch(98% 0.002 240);
+  --sidebar-accent: oklch(92% 0.01 240);
+  --sidebar-accent-foreground: oklch(22% 0.01 240);
+  --sidebar-border: oklch(88% 0.01 240);
+  --sidebar-ring: oklch(65% 0.19 210);
+
+  /* Layout */
+  --radius: 0.8rem;
+
+  /* Shadows - cool tinted */
+  --shadow-2xs: 0 1px 2px 0px oklch(20% 0.01 240 / 0.04);
+  --shadow-xs: 0 1px 3px 0px oklch(20% 0.01 240 / 0.06);
+  --shadow-sm: 0 1px 3px 0px oklch(20% 0.01 240 / 0.08),
+    0 1px 2px -1px oklch(20% 0.01 240 / 0.08);
+  --shadow: 0 2px 4px 0px oklch(20% 0.01 240 / 0.08),
+    0 1px 2px -1px oklch(20% 0.01 240 / 0.06);
+  --shadow-md: 0 4px 6px -1px oklch(20% 0.01 240 / 0.1),
+    0 2px 4px -2px oklch(20% 0.01 240 / 0.08);
+  --shadow-lg: 0 10px 15px -3px oklch(20% 0.01 240 / 0.1),
+    0 4px 6px -4px oklch(20% 0.01 240 / 0.08);
+  --shadow-xl: 0 20px 25px -5px oklch(20% 0.01 240 / 0.1),
+    0 8px 10px -6px oklch(20% 0.01 240 / 0.08);
+  --shadow-2xl: 0 25px 50px -12px oklch(20% 0.01 240 / 0.2);
+
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+
+  /* Special components */
+  --month-picker: oklch(92% 0.01 240);
+  --month-picker-foreground: oklch(22% 0.01 240);
+  --dark: oklch(22% 0.01 240);
+  --dark-foreground: oklch(94% 0.004 240);
+  --welcome-banner: var(--primary);
+  --welcome-banner-foreground: oklch(98% 0.002 240);
+}
+
+.dark {
+  /* Base surfaces - deep dark with cool blue tint */
+  --background: oklch(12% 0.01 240);
+  --foreground: oklch(95% 0.004 240);
+  --card: oklch(16% 0.012 240);
+  --card-foreground: oklch(95% 0.004 240);
+  --popover: oklch(18% 0.014 240);
+  --popover-foreground: oklch(95% 0.004 240);
+
+  /* Primary - Vibrant Cyan pops on dark */
+  --primary: oklch(70% 0.2 210);
+  --primary-foreground: oklch(12% 0.01 240);
+
+  /* Secondary - Rich Purple */
+  --secondary: oklch(50% 0.16 290);
+  --secondary-foreground: oklch(95% 0.004 240);
+
+  /* Muted - Dark gray-blue */
+  --muted: oklch(22% 0.012 240);
+  --muted-foreground: oklch(65% 0.008 240);
+
+  /* Accent - Bright Neon Purple */
+  --accent: oklch(65% 0.19 300);
+  --accent-foreground: oklch(12% 0.01 240);
+
+  /* Destructive - Bright Red */
+  --destructive: oklch(60% 0.24 25);
+  --destructive-foreground: oklch(95% 0.004 240);
+
+  /* Borders and inputs */
+  --border: oklch(28% 0.014 240);
+  --input: oklch(32% 0.016 240);
+  --ring: oklch(70% 0.2 210);
+
+  /* Charts - Vibrant on dark */
+  --chart-1: oklch(70% 0.2 210); /* Cyan */
+  --chart-2: oklch(65% 0.19 300); /* Purple */
+  --chart-3: oklch(68% 0.21 160); /* Green */
+  --chart-4: oklch(72% 0.22 45); /* Orange */
+  --chart-5: oklch(75% 0.19 330); /* Pink */
+
+  /* Sidebar */
+  --sidebar: oklch(14% 0.012 240);
+  --sidebar-foreground: oklch(92% 0.004 240);
+  --sidebar-primary: oklch(70% 0.2 210);
+  --sidebar-primary-foreground: oklch(12% 0.01 240);
+  --sidebar-accent: oklch(22% 0.014 240);
+  --sidebar-accent-foreground: oklch(92% 0.004 240);
+  --sidebar-border: oklch(28% 0.014 240);
+  --sidebar-ring: oklch(70% 0.2 210);
+
+  /* Layout */
+  --radius: 0.8rem;
+
+  /* Shadows - deeper for dark mode */
+  --shadow-2xs: 0 1px 2px 0px oklch(0% 0 0 / 0.3);
+  --shadow-xs: 0 1px 3px 0px oklch(0% 0 0 / 0.4);
+  --shadow-sm: 0 1px 3px 0px oklch(0% 0 0 / 0.45),
+    0 1px 2px -1px oklch(0% 0 0 / 0.45);
+  --shadow: 0 2px 4px 0px oklch(0% 0 0 / 0.5),
+    0 1px 2px -1px oklch(0% 0 0 / 0.4);
+  --shadow-md: 0 4px 6px -1px oklch(0% 0 0 / 0.55),
+    0 2px 4px -2px oklch(0% 0 0 / 0.45);
+  --shadow-lg: 0 10px 15px -3px oklch(0% 0 0 / 0.55),
+    0 4px 6px -4px oklch(0% 0 0 / 0.45);
+  --shadow-xl: 0 20px 25px -5px oklch(0% 0 0 / 0.6),
+    0 8px 10px -6px oklch(0% 0 0 / 0.5);
+  --shadow-2xl: 0 25px 50px -12px oklch(0% 0 0 / 0.7);
+
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+
+  /* Special components */
+  --month-picker: oklch(22% 0.006 285);
+  --month-picker-foreground: oklch(85% 0.02 315);
+  --dark: oklch(93% 0.003 285);
+  --dark-foreground: oklch(18% 0.005 285);
+  --welcome-banner: oklch(22% 0.006 285);
+  --welcome-banner-foreground: oklch(95% 0.003 285);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --shadow-2xs: var(--shadow-2xs);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
+  --tracking-normal: var(--tracking-normal);
+  --spacing: var(--spacing);
+  --color-month-picker: var(--month-picker);
+  --color-month-picker-foreground: var(--month-picker-foreground);
+  --color-dark: var(--dark);
+  --color-dark-foreground: var(--dark-foreground);
+  --color-welcome-banner: var(--welcome-banner);
+  --color-welcome-banner-foreground: var(--welcome-banner-foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Offset para o header sticky */
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  *::selection {
+    @apply bg-primary/25 text-foreground;
+  }
+
+  .dark *::selection {
+    @apply bg-primary/30 text-foreground;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .container {
+    @apply mx-auto px-4 lg:px-0;
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
