@@ -19,11 +19,11 @@ function AuthSidebar() {
       <div className="relative flex flex-1 flex-col justify-between p-8">
         <div className="space-y-4">
           <h2 className="text-3xl font-semibold leading-tight">
-            Controle suas finanças com clareza e foco diário.
+            Domine o jogo com precisão absoluta.
           </h2>
           <p className="text-sm opacity-90">
-            Centralize despesas, organize cartões e acompanhe metas mensais em
-            um painel inteligente feito para o seu dia a dia.
+            Macros indetectáveis para CS2, Valorant, Apex e muito mais.
+            Configure em minutos e jogue como um profissional.
           </p>
         </div>
       </div>

@@ -1,8 +1,7 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-  Collapsible,
+  Collapsible, 
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
@@ -18,14 +17,12 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { getAvatarSrc } from "@/lib/pagadores/utils";
 import {
   RiArrowRightSLine,
-  RiStackshareLine,
   type RemixiconComponentType,
 } from "@remixicon/react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import * as React from "react";
 
 type NavItem = {
@@ -49,8 +46,6 @@ type NavSection = {
 
 export function NavMain({ sections }: { sections: NavSection[] }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const periodParam = searchParams.get(MONTH_PERIOD_PARAM);
 
   const isLinkActive = React.useCallback(
     (url: string) => {
@@ -61,7 +56,6 @@ export function NavMain({ sections }: { sections: NavSection[] }) {
       const normalizedUrl =
         url.endsWith("/") && url !== "/" ? url.slice(0, -1) : url;
 
-      // Verifica se é exatamente igual ou se o pathname começa com a URL
       return (
         normalizedPathname === normalizedUrl ||
         normalizedPathname.startsWith(normalizedUrl + "/")
@@ -70,35 +64,8 @@ export function NavMain({ sections }: { sections: NavSection[] }) {
     [pathname]
   );
 
-  const buildHrefWithPeriod = React.useCallback(
-    (url: string) => {
-      if (!periodParam) {
-        return url;
-      }
-
-      const [rawPathname, existingSearch = ""] = url.split("?");
-      const normalizedPathname =
-        rawPathname.endsWith("/") && rawPathname !== "/"
-          ? rawPathname.slice(0, -1)
-          : rawPathname;
-
-      if (!PERIOD_AWARE_PATHS.has(normalizedPathname)) {
-        return url;
-      }
-
-      const params = new URLSearchParams(existingSearch);
-      params.set(MONTH_PERIOD_PARAM, periodParam);
-
-      const queryString = params.toString();
-      return queryString
-        ? `${normalizedPathname}?${queryString}`
-        : normalizedPathname;
-    },
-    [periodParam]
-  );
-
   const activeLinkClasses =
-    "data-[active=true]:bg-sidebar-accent data-[active=true]:text-dark! hover:text-primary!";
+    "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground";
 
   return (
     <>
@@ -118,15 +85,15 @@ export function NavMain({ sections }: { sections: NavSection[] }) {
                         isActive={itemIsActive}
                         className={itemIsActive ? activeLinkClasses : ""}
                       >
-                        <Link prefetch href={buildHrefWithPeriod(item.url)}>
-                          <item.icon className={"h-4 w-4"} />
-                          {item.title}
+                        <Link prefetch href={item.url}>
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.title}</span>
                         </Link>
                       </SidebarMenuButton>
                       {item.items?.length ? (
                         <>
                           <CollapsibleTrigger asChild>
-                            <SidebarMenuAction className="data-[state=open]:rotate-90 text-foreground px-2 trasition-transform duration-200">
+                            <SidebarMenuAction className="data-[state=open]:rotate-90">
                               <RiArrowRightSLine />
                               <span className="sr-only">Toggle</span>
                             </SidebarMenuAction>
@@ -137,11 +104,6 @@ export function NavMain({ sections }: { sections: NavSection[] }) {
                                 const subItemIsActive = isLinkActive(
                                   subItem.url
                                 );
-                                const avatarSrc = getAvatarSrc(
-                                  subItem.avatarUrl
-                                );
-                                const initial =
-                                  subItem.title.charAt(0).toUpperCase() || "?";
                                 return (
                                   <SidebarMenuSubItem
                                     key={subItem.key ?? subItem.title}
@@ -155,24 +117,9 @@ export function NavMain({ sections }: { sections: NavSection[] }) {
                                     >
                                       <Link
                                         prefetch
-                                        href={buildHrefWithPeriod(subItem.url)}
-                                        className="flex items-center gap-2"
+                                        href={subItem.url}
                                       >
-                                        {subItem.avatarUrl !== undefined ? (
-                                          <Avatar className="size-5 border border-border/60 bg-background">
-                                            <AvatarImage
-                                              src={avatarSrc}
-                                              alt={`Avatar de ${subItem.title}`}
-                                            />
-                                            <AvatarFallback className="text-[10px] font-medium uppercase">
-                                              {initial}
-                                            </AvatarFallback>
-                                          </Avatar>
-                                        ) : null}
                                         <span>{subItem.title}</span>
-                                        {subItem.isShared ? (
-                                          <RiStackshareLine className="size-3.5 text-muted-foreground" />
-                                        ) : null}
                                       </Link>
                                     </SidebarMenuSubButton>
                                   </SidebarMenuSubItem>
@@ -193,11 +140,3 @@ export function NavMain({ sections }: { sections: NavSection[] }) {
     </>
   );
 }
-
-const MONTH_PERIOD_PARAM = "periodo";
-
-const PERIOD_AWARE_PATHS = new Set([
-  "/dashboard",
-  "/lancamentos",
-  "/orcamentos",
-]);

@@ -55,8 +55,8 @@ export function DashboardWelcome({ name }: DashboardWelcomeProps) {
     >
       <div className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
         <MagnetLines
-          rows={8}
-          columns={16}
+          rows={9}
+          columns={18}
           containerSize="100%"
           lineColor="currentColor"
           lineWidth="0.4vmin"

@@ -1,5 +1,5 @@
 // lib/i18n/get-locale.ts
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import type { Locale } from "./translations";
 
 /**
@@ -9,6 +9,15 @@ import type { Locale } from "./translations";
  * 3. Fallback para 'en'
  */
 export async function getLocale(): Promise<Locale> {
+  // 1. Verifica cookie
+  const cookieStore = await cookies();
+  const localeCookie = cookieStore.get("NEXT_LOCALE");
+  
+  if (localeCookie?.value === "pt-BR" || localeCookie?.value === "en") {
+    return localeCookie.value as Locale;
+  }
+
+  // 2. Verifica header
   const headersList = await headers();
   const acceptLanguage = headersList.get("accept-language");
 

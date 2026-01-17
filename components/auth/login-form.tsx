@@ -90,7 +90,7 @@ export function LoginForm({ className, ...props }: DivProps) {
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Logo className="mb-2" />
+      <Logo variant="split" className="mb-6" />
       <Card className="overflow-hidden p-0">
         <CardContent className="grid gap-0 p-0 md:grid-cols-[1.05fr_0.95fr]">
           <form
@@ -99,7 +99,10 @@ export function LoginForm({ className, ...props }: DivProps) {
             noValidate
           >
             <FieldGroup className="gap-4">
-              <AuthHeader title="Entrar no Opensheets" />
+              <AuthHeader
+                title="Acessar Dashboard"
+                description="Entre para gerenciar seus macros"
+              />
 
               <AuthErrorAlert error={error} />
 

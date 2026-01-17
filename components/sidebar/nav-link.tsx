@@ -1,15 +1,9 @@
 import {
-  RiArrowLeftRightLine,
-  RiBankCardLine,
-  RiBankLine,
-  RiCalendarEventLine,
   RiDashboardLine,
-  RiFundsLine,
-  RiGroupLine,
-  RiPriceTag3Line,
+  RiDownloadCloudLine,
+  RiBookOpenLine,
+  RiBankCardLine,
   RiSettingsLine,
-  RiSparklingLine,
-  RiTodoLine,
   type RemixiconComponentType,
 } from "@remixicon/react";
 
@@ -43,106 +37,44 @@ export type SidebarNavData = {
   }[];
 };
 
-export interface PagadorLike {
-  id: string;
-  name: string | null;
-  avatarUrl: string | null;
-  canEdit?: boolean;
-}
-
-export function createSidebarNavData(pagadores: PagadorLike[]): SidebarNavData {
-  const pagadorItems = pagadores
-    .map((pagador) => ({
-      title: pagador.name?.trim().length
-        ? pagador.name.trim()
-        : "Pagador sem nome",
-      url: `/pagadores/${pagador.id}`,
-      key: pagador.canEdit ? pagador.id : `${pagador.id}-shared`,
-      isShared: !pagador.canEdit,
-      avatarUrl: pagador.avatarUrl,
-    }))
-    .sort((a, b) =>
-      a.title.localeCompare(b.title, "pt-BR", { sensitivity: "base" })
-    );
-
+export function createSidebarNavData(): SidebarNavData {
   return {
     navMain: [
       {
-        title: "Visão Geral",
+        title: "Plataforma",
         items: [
           {
-            title: "Dashboard",
+            title: "Visão Geral",
             url: "/dashboard",
             icon: RiDashboardLine,
           },
+          {
+            title: "Downloads",
+            url: "/dashboard/downloads",
+            icon: RiDownloadCloudLine,
+          },
+          {
+            title: "Tutoriais",
+            url: "/dashboard/tutorials",
+            icon: RiBookOpenLine,
+          },
         ],
       },
       {
-        title: "Gestão Financeira",
+        title: "Conta",
         items: [
           {
-            title: "Lançamentos",
-            url: "/lancamentos",
-            icon: RiArrowLeftRightLine,
-          },
-          {
-            title: "Calendário",
-            url: "/calendario",
-            icon: RiCalendarEventLine,
-          },
-          {
-            title: "Cartões",
-            url: "/cartoes",
+            title: "Assinatura",
+            url: "/dashboard/billing",
             icon: RiBankCardLine,
-          },
-          {
-            title: "Contas",
-            url: "/contas",
-            icon: RiBankLine,
-          },
-          {
-            title: "Orçamentos",
-            url: "/orcamentos",
-            icon: RiFundsLine,
-          },
-        ],
-      },
-      {
-        title: "Organização",
-        items: [
-          {
-            title: "Pagadores",
-            url: "/pagadores",
-            icon: RiGroupLine,
-            items: pagadorItems,
-          },
-          {
-            title: "Categorias",
-            url: "/categorias",
-            icon: RiPriceTag3Line,
-          },
-        ],
-      },
-      {
-        title: "Análise e Anotações",
-        items: [
-          {
-            title: "Anotações",
-            url: "/anotacoes",
-            icon: RiTodoLine,
-          },
-          {
-            title: "Insights",
-            url: "/insights",
-            icon: RiSparklingLine,
           },
         ],
       },
     ],
     navSecondary: [
       {
-        title: "Ajustes",
-        url: "/ajustes",
+        title: "Configurações",
+        url: "/dashboard/settings",
         icon: RiSettingsLine,
       },
     ],

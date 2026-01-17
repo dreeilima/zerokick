@@ -1,5 +1,8 @@
 import { AnimatedThemeToggler } from "@/components/animated-theme-toggler";
+import { GameCard } from "@/components/games/game-card";
 import { Logo } from "@/components/logo";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { PricingCard } from "@/components/pricing/pricing-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,6 +13,7 @@ import {
   RiBankCardLine,
   RiBarChartBoxLine,
   RiCalendarLine,
+  RiCheckLine,
   RiCodeSSlashLine,
   RiDatabase2Line,
   RiDeviceLine,
@@ -19,11 +23,13 @@ import {
   RiMoneyDollarCircleLine,
   RiPieChartLine,
   RiShieldCheckLine,
+  RiStarFill,
   RiTimeLine,
   RiWalletLine,
 } from "@remixicon/react";
 import Image from "next/image";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default async function Page() {
   const session = await getOptionalUserSession();
@@ -56,6 +62,7 @@ export default async function Page() {
           </nav>
 
           <nav className="flex items-center gap-2 md:gap-4">
+            <LanguageSwitcher />
             <AnimatedThemeToggler />
             {session?.user ? (
               <Link prefetch href="/dashboard">
@@ -145,498 +152,368 @@ export default async function Page() {
         </div>
       </section>
 
-      {/* Dashboard Preview Section */}
-      <section className="py-8 md:py-16">
-        <div className="container">
-          <div className="mx-auto max-w-6xl">
-            <Image
-              src="/dashboard-preview.png"
-              alt="opensheets Dashboard Preview"
-              width={1920}
-              height={1080}
-              className="w-full h-auto"
-              priority
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* What's Here Section */}
-      <section id="funcionalidades" className="py-16 md:py-24 bg-muted/30">
-        <div className="container">
-          <div className="mx-auto max-w-5xl">
-            <div className="text-center mb-12">
-              <Badge variant="primary" className="mb-4">
-                Features
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                Everything you need to dominate
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Professional-grade macros with features that matter for
-                competitive gaming
-              </p>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="border hover:border-primary/50 transition-colors">
-                <CardContent className="pt-6">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                      <RiDeviceLine size={24} className="text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">
-                        Multi-Game Support
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        CS2, Valorant, Apex Legends, PUBG, Rust, Rainbow Six
-                        Siege, and more. All your favorite FPS games in one
-                        place.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border hover:border-primary/50 transition-colors">
-                <CardContent className="pt-6">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                      <RiTimeLine size={24} className="text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">
-                        Instant Updates
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Scripts automatically updated with every game patch. No
-                        waiting, no manual updates. Always ready to play.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border hover:border-primary/50 transition-colors">
-                <CardContent className="pt-6">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                      <RiShieldCheckLine size={24} className="text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">
-                        Safe & Undetectable
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Runs through official Logitech G Hub and Razer Synapse.
-                        100% undetectable by anti-cheat systems.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border hover:border-primary/50 transition-colors">
-                <CardContent className="pt-6">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                      <RiCodeSSlashLine size={24} className="text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">
-                        Easy Installation
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        One-click download and setup. Simple configuration with
-                        step-by-step tutorials. Start playing in minutes.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border hover:border-primary/50 transition-colors">
-                <CardContent className="pt-6">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                      <RiLockLine size={24} className="text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">
-                        Lifetime Access
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        One-time purchase, forever yours. No recurring fees, no
-                        subscriptions. Pay once, use forever.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border hover:border-primary/50 transition-colors">
-                <CardContent className="pt-6">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                      <RiBarChartBoxLine size={24} className="text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">
-                        Premium Support
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Active Discord community and ticket system. Get help
-                        when you need it from experienced users.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Tech Stack Section */}
-      <section id="stack" className="py-16 md:py-24">
-        <div className="container">
-          <div className="mx-auto max-w-5xl">
-            <div className="text-center mb-12">
-              <Badge variant="primary" className="mb-4">
-                Stack técnica
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                Construído com tecnologias modernas
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Open source, self-hosted e fácil de customizar
-              </p>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-2">
-              <Card className="border">
-                <CardContent>
-                  <div className="flex items-start gap-4">
-                    <RiCodeSSlashLine
-                      size={32}
-                      className="text-primary shrink-0"
-                    />
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">Frontend</h3>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Next.js 16, TypeScript, Tailwind CSS, shadcn/ui
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Interface moderna e responsiva com React 19 e App Router
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border">
-                <CardContent>
-                  <div className="flex items-start gap-4">
-                    <RiDatabase2Line
-                      size={32}
-                      className="text-primary shrink-0"
-                    />
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">Backend</h3>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        PostgreSQL 18, Drizzle ORM, Better Auth
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Banco relacional robusto com type-safe ORM
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border">
-                <CardContent>
-                  <div className="flex items-start gap-4">
-                    <RiShieldCheckLine
-                      size={32}
-                      className="text-primary shrink-0"
-                    />
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">Segurança</h3>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Better Auth com OAuth (Google) e autenticação por email
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Sessões seguras e proteção de rotas por middleware
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border">
-                <CardContent>
-                  <div className="flex items-start gap-4">
-                    <RiDeviceLine size={32} className="text-primary shrink-0" />
-                    <div>
-                      <h3 className="font-semibold text-lg mb-2">Deploy</h3>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Docker com multi-stage build, health checks e volumes
-                        persistentes
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Fácil de rodar localmente ou em qualquer servidor
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="mt-8 text-center">
-              <p className="text-sm text-muted-foreground">
-                Seus dados ficam no seu controle. Pode rodar localmente ou no
-                seu próprio servidor.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How to run Section */}
-      <section id="como-usar" className="py-16 md:py-24">
-        <div className="container">
-          <div className="mx-auto max-w-3xl">
-            <div className="text-center mb-12">
-              <Badge variant="primary" className="mb-4">
-                Como usar
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                Rode no seu computador
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                Não há versão hospedada online. Você precisa rodar localmente.
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <Card className="border">
-                <CardContent>
-                  <div className="flex gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
-                      1
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-2">
-                        Clone o repositório
-                      </h3>
-                      <code className="text-sm bg-muted px-2 py-1 rounded">
-                        git clone
-                        https://github.com/felipegcoutinho/opensheets-app.git
-                      </code>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border">
-                <CardContent>
-                  <div className="flex gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
-                      2
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-2">
-                        Configure as variáveis de ambiente
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Copie o{" "}
-                        <code className="bg-muted px-1 rounded">
-                          .env.example
-                        </code>{" "}
-                        para <code className="bg-muted px-1 rounded">.env</code>{" "}
-                        e configure o banco de dados
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border">
-                <CardContent>
-                  <div className="flex gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
-                      3
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-2">
-                        Suba o banco via Docker
-                      </h3>
-                      <code className="text-sm bg-muted px-2 py-1 rounded">
-                        docker compose up db -d
-                      </code>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border">
-                <CardContent>
-                  <div className="flex gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
-                      4
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-2">
-                        Rode a aplicação localmente
-                      </h3>
-                      <div className="space-y-2">
-                        <code className="block text-sm bg-muted px-2 py-1 rounded">
-                          pnpm install
-                        </code>
-                        <code className="block text-sm bg-muted px-2 py-1 rounded">
-                          pnpm db:push
-                        </code>
-                        <code className="block text-sm bg-muted px-2 py-1 rounded">
-                          pnpm dev
-                        </code>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="mt-8 text-center">
-              <Link
-                href="https://github.com/felipegcoutinho/opensheets-app#-início-rápido"
-                target="_blank"
-                className="text-sm text-primary hover:underline"
-              >
-                Ver documentação completa →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Who is this for Section */}
+      {/* Product Showcase Section */}
       <section className="py-16 md:py-24 bg-muted/30">
         <div className="container">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto max-w-6xl">
             <div className="text-center mb-12">
+              <Badge variant="primary" className="mb-4">
+                {t.showcase.badge}
+              </Badge>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                Para quem funciona?
+                {t.showcase.title}
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                {t.showcase.description}
+              </p>
+            </div>
+
+            <div className="space-y-12">
+              {/* Dashboard Preview */}
+              <div className="relative rounded-xl overflow-hidden border shadow-2xl">
+                <Image
+                  src="/dashboard-preview.png"
+                  alt="ZeroKick Dashboard"
+                  width={1920}
+                  height={1080}
+                  className="w-full h-auto"
+                  priority
+                />
+              </div>
+
+              {/* Features Grid */}
+              <div className="grid gap-6 md:grid-cols-3">
+                {t.showcase.features.map((feature, index) => (
+                  <Card key={index} className="border">
+                    <CardContent className="pt-6">
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                          <RiCheckLine size={20} className="text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold mb-2">
+                            {feature.title}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {feature.description}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Macro Config Preview */}
+              <div className="relative rounded-xl overflow-hidden border shadow-2xl">
+                <Image
+                  src="/macro-config.png"
+                  alt="Macro Configuration"
+                  width={1920}
+                  height={1080}
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Supported Games Section */}
+      <section id="games" className="py-16 md:py-24">
+        <div className="container">
+          <div className="mx-auto max-w-6xl">
+            <div className="text-center mb-12">
+              <Badge variant="primary" className="mb-4">
+                {t.games.badge}
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+                {t.games.title}
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                {t.games.description}
+              </p>
+            </div>
+
+            <div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+              <GameCard name="CS2" slug="cs2" icon="/games/cs2.png" />
+              <GameCard
+                name="Valorant"
+                slug="valorant"
+                icon="/games/valorant.png"
+              />
+              <GameCard
+                name="Apex Legends"
+                slug="apex"
+                icon="/games/apex.png"
+              />
+              <GameCard
+                name="Rainbow Six Siege"
+                slug="r6s"
+                icon="/games/r6s.png"
+              />
+              <GameCard name="Rust" slug="rust" icon="/games/rust.png" />
+              <GameCard name="PUBG" slug="pubg" icon="/games/pubg.png" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA After Games */}
+      <section className="py-16 md:py-24 bg-primary/5">
+        <div className="container">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+              {t.cta.afterGames.title}
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8">
+              {t.cta.afterGames.description}
+            </p>
+            <Link href="/signup">
+              <Button size="lg" className="gap-2">
+                {t.cta.afterGames.button}
+                <RiArrowRightSLine size={20} />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-16 md:py-24">
+        <div className="container">
+          <div className="mx-auto max-w-5xl">
+            <div className="text-center mb-12">
+              <Badge variant="primary" className="mb-4">
+                {t.testimonials.badge}
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+                {t.testimonials.title}
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                {t.testimonials.description}
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-3">
+              {t.testimonials.reviews.map((review, index) => (
+                <Card key={index} className="border h-full">
+                  <CardContent className="pt-6 flex flex-col h-full">
+                    <div className="flex items-center gap-1 mb-4">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <RiStarFill
+                          key={star}
+                          size={16}
+                          className="text-yellow-500"
+                        />
+                      ))}
+                    </div>
+                    
+                    <p className="text-muted-foreground mb-6 flex-1">
+                      "{review.content}"
+                    </p>
+
+                    <div className="flex items-center gap-3 mt-auto border-t pt-4">
+                      <Avatar>
+                        <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                          {review.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-semibold text-sm">{review.name}</p>
+                        <p className="text-xs text-primary font-medium">
+                          {review.role}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="py-16 md:py-24 bg-muted/30">
+        <div className="container">
+          <div className="mx-auto max-w-6xl">
+            <div className="text-center mb-12">
+              <Badge variant="primary" className="mb-4">
+                {t.pricing.badge}
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+                {t.pricing.title}
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                {t.pricing.description}
+              </p>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-3 mt-12">
+              {/* Basic Plan */}
+              <PricingCard
+                name={t.pricing.basic.name}
+                price={t.pricing.basic.price}
+                description={t.pricing.basic.description}
+                features={t.pricing.basic.features}
+                cta={t.pricing.cta}
+                priceLabel={t.pricing.lifetimeLabel}
+              />
+
+              {/* Pro Plan */}
+              <PricingCard
+                name={t.pricing.pro.name}
+                price={t.pricing.pro.price}
+                description={t.pricing.pro.description}
+                features={t.pricing.pro.features}
+                cta={t.pricing.cta}
+                popular={true}
+                priceLabel={t.pricing.monthlyLabel}
+              />
+
+              {/* Lifetime Plan */}
+              <PricingCard
+                name={t.pricing.lifetime.name}
+                price={t.pricing.lifetime.price}
+                description={t.pricing.lifetime.description}
+                features={t.pricing.lifetime.features}
+                cta={t.pricing.cta}
+                priceLabel={t.pricing.lifetimeLabel}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section id="how-it-works" className="py-16 md:py-24">
+        <div className="container">
+          <div className="mx-auto max-w-5xl">
+            <div className="text-center mb-12">
+              <Badge variant="primary" className="mb-4">
+                {t.howItWorks.badge}
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+                {t.howItWorks.title}
               </h2>
               <p className="text-lg text-muted-foreground">
-                O opensheets funciona melhor se você:
+                {t.howItWorks.description}
+              </p>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-3">
+              {/* Step 1 */}
+              <div className="relative">
+                <div className="flex flex-col items-center text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground text-2xl font-bold mb-4">
+                    1
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">
+                    {t.howItWorks.step1.title}
+                  </h3>
+                  <p className="text-muted-foreground">
+                    {t.howItWorks.step1.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="relative">
+                <div className="flex flex-col items-center text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground text-2xl font-bold mb-4">
+                    2
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">
+                    {t.howItWorks.step2.title}
+                  </h3>
+                  <p className="text-muted-foreground">
+                    {t.howItWorks.step2.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="relative">
+                <div className="flex flex-col items-center text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground text-2xl font-bold mb-4">
+                    3
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">
+                    {t.howItWorks.step3.title}
+                  </h3>
+                  <p className="text-muted-foreground">
+                    {t.howItWorks.step3.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-16 md:py-24 bg-muted/30">
+        <div className="container">
+          <div className="mx-auto max-w-3xl">
+            <div className="text-center mb-12">
+              <Badge variant="primary" className="mb-4">
+                {t.faq.badge}
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+                {t.faq.title}
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                {t.faq.description}
               </p>
             </div>
 
             <div className="space-y-4">
-              <Card className="border">
-                <CardContent>
-                  <div className="flex gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                      <RiTimeLine size={20} className="text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">
-                        Tem disciplina de registrar gastos
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Não se importa em dedicar alguns minutos por dia ou
-                        semana para manter tudo atualizado
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border">
-                <CardContent>
-                  <div className="flex gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                      <RiLockLine size={20} className="text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">
-                        Quer controle total sobre seus dados
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Prefere hospedar seus próprios dados ao invés de
-                        depender de serviços terceiros
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border">
-                <CardContent>
-                  <div className="flex gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                      <RiLineChartLine size={20} className="text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">
-                        Gosta de entender exatamente onde o dinheiro vai
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Quer visualizar padrões de gastos e tomar decisões
-                        informadas
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="mt-8 rounded-lg border bg-background p-6 text-center">
-              <p className="text-sm text-muted-foreground">
-                Se você não se encaixa nisso, provavelmente vai abandonar depois
-                de uma semana. E tudo bem! Existem outras ferramentas com
-                sincronização automática que podem funcionar melhor pra você.
-              </p>
+              {t.faq.questions.map((item, index) => (
+                <Card key={index} className="border">
+                  <CardContent className="pt-6">
+                    <h3 className="font-semibold text-lg mb-3">
+                      {item.question}
+                    </h3>
+                    <p className="text-muted-foreground">{item.answer}</p>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Final CTA */}
       <section className="py-16 md:py-24">
         <div className="container">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-              Pronto para testar?
-            </h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              Clone o repositório, rode localmente e veja se faz sentido pra
-              você. É open source e gratuito.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="https://github.com/felipegcoutinho/opensheets-app"
-                target="_blank"
-              >
-                <Button size="lg" className="gap-2 w-full sm:w-auto">
-                  <RiGithubFill size={18} />
-                  Baixar Projeto
-                </Button>
-              </Link>
-              <Link
-                href="https://github.com/felipegcoutinho/opensheets-app#-início-rápido"
-                target="_blank"
-              >
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full sm:w-auto gap-2"
-                >
-                  Como Instalar
-                </Button>
-              </Link>
+          <div className="mx-auto max-w-4xl">
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-background border border-primary/20 p-8 md:p-12">
+              <div className="relative z-10 text-center">
+                <Badge variant="secondary" className="mb-4">
+                  {t.cta.final.badge}
+                </Badge>
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+                  {t.cta.final.title}
+                </h2>
+                <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+                  {t.cta.final.description}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link href="/signup">
+                    <Button size="lg" className="gap-2 w-full sm:w-auto">
+                      {t.cta.final.button}
+                      <RiArrowRightSLine size={20} />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+              {/* Decorative gradient blob */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-0" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-0" />
             </div>
           </div>
         </div>
@@ -648,66 +525,82 @@ export default async function Page() {
           <div className="mx-auto max-w-5xl">
             <div className="grid gap-8 md:grid-cols-3">
               <div>
-                <Logo />
+                <Logo variant="split" />
                 <p className="text-sm text-muted-foreground mt-4">
-                  Projeto pessoal de gestão financeira. Open source e
-                  self-hosted.
+                  {t.footer.description}
                 </p>
               </div>
 
-              <div>
-                <h3 className="font-semibold mb-4">Projeto</h3>
-                <ul className="space-y-3 text-sm text-muted-foreground">
-                  <li>
-                    <Link
-                      href="https://github.com/felipegcoutinho/opensheets-app"
-                      target="_blank"
-                      className="hover:text-foreground transition-colors flex items-center gap-2"
-                    >
-                      <RiGithubFill size={16} />
-                      GitHub
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="https://github.com/felipegcoutinho/opensheets-app#readme"
-                      target="_blank"
-                      className="hover:text-foreground transition-colors"
-                    >
-                      Documentação
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="https://github.com/felipegcoutinho/opensheets-app/issues"
-                      target="_blank"
-                      className="hover:text-foreground transition-colors"
-                    >
-                      Reportar Bug
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+              <div className="md:col-span-2 flex justify-end gap-12">
+                <div>
+                  <h3 className="font-semibold mb-4">Produto</h3>
+                  <ul className="space-y-3 text-sm text-muted-foreground">
+                    <li>
+                      <Link
+                        href="#features"
+                        className="hover:text-foreground transition-colors"
+                      >
+                        Funcionalidades
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="#pricing"
+                        className="hover:text-foreground transition-colors"
+                      >
+                        Planos
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="#faq"
+                        className="hover:text-foreground transition-colors"
+                      >
+                        FAQ
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
 
-              <div>
-                <h3 className="font-semibold mb-4">Stack</h3>
-                <ul className="space-y-3 text-sm text-muted-foreground">
-                  <li>Next.js 16 + TypeScript</li>
-                  <li>PostgreSQL 18 + Drizzle ORM</li>
-                  <li>Better Auth + shadcn/ui</li>
-                  <li>Docker + Docker Compose</li>
-                </ul>
+                <div>
+                  <h3 className="font-semibold mb-4">Suporte</h3>
+                  <ul className="space-y-3 text-sm text-muted-foreground">
+                    <li>
+                      <Link
+                        href="#"
+                        className="hover:text-foreground transition-colors"
+                      >
+                        Documentação
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="#"
+                        className="hover:text-foreground transition-colors"
+                      >
+                        Termos de Uso
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="#"
+                        className="hover:text-foreground transition-colors"
+                      >
+                        Privacidade
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
 
             <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
               <p>
-                © {new Date().getFullYear()} opensheets. Projeto open source sob
-                licença MIT.
+                © {new Date().getFullYear()} ZeroKick. {t.footer.copyright}
               </p>
               <div className="flex items-center gap-2">
                 <RiShieldCheckLine size={16} className="text-primary" />
-                <span>Seus dados, seu servidor</span>
+                <span>{t.footer.trustBadge}</span>
               </div>
             </div>
           </div>

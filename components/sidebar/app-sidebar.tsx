@@ -14,25 +14,20 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import * as React from "react";
-import { createSidebarNavData, type PagadorLike } from "./nav-link";
-
+import { createSidebarNavData } from "./nav-link";
 type AppUser = {
   id: string;
   name: string;
   email: string;
-  image: string | null;
+  image?: string | null;
 };
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: AppUser;
-  pagadorAvatarUrl: string | null;
-  pagadores: PagadorLike[];
 }
 
 export function AppSidebar({
   user,
-  pagadorAvatarUrl,
-  pagadores,
   ...props
 }: AppSidebarProps) {
   if (!user) {
@@ -40,8 +35,8 @@ export function AppSidebar({
   }
 
   const navigation = React.useMemo(
-    () => createSidebarNavData(pagadores),
-    [pagadores]
+    () => createSidebarNavData(),
+    []
   );
 
   return (
@@ -65,7 +60,7 @@ export function AppSidebar({
         <NavSecondary items={navigation.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} pagadorAvatarUrl={pagadorAvatarUrl} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );
@@ -75,5 +70,5 @@ function LogoContent() {
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
 
-  return <Logo variant={isCollapsed ? "small" : "full"} />;
+  return <Logo variant={isCollapsed ? "icon" : "full"} />;
 }
