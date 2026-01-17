@@ -20,23 +20,21 @@ type AppUser = {
   name: string;
   email: string;
   image?: string | null;
+  role?: string; // Add role
 };
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: AppUser;
 }
 
-export function AppSidebar({
-  user,
-  ...props
-}: AppSidebarProps) {
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
   if (!user) {
     throw new Error("AppSidebar requires a user but received undefined.");
   }
 
   const navigation = React.useMemo(
-    () => createSidebarNavData(),
-    []
+    () => createSidebarNavData(user.role),
+    [user.role],
   );
 
   return (

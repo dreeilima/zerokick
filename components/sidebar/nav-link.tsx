@@ -5,6 +5,7 @@ import {
   RiBankCardLine,
   RiSettingsLine,
   type RemixiconComponentType,
+  RiShoppingCart2Line,
 } from "@remixicon/react";
 
 export type SidebarSubItem = {
@@ -37,40 +38,71 @@ export type SidebarNavData = {
   }[];
 };
 
-export function createSidebarNavData(): SidebarNavData {
+export function createSidebarNavData(role?: string): SidebarNavData {
+  const navMain = [
+    {
+      title: "Plataforma",
+      items: [
+        {
+          title: "Visão Geral",
+          url: "/dashboard",
+          icon: RiDashboardLine,
+        },
+        {
+          title: "Loja",
+          url: "/dashboard/shop",
+          icon: RiShoppingCart2Line,
+        },
+        {
+          title: "Downloads",
+          url: "/dashboard/downloads",
+          icon: RiDownloadCloudLine,
+        },
+        {
+          title: "Tutoriais",
+          url: "/dashboard/tutorials",
+          icon: RiBookOpenLine,
+        },
+      ],
+    },
+    {
+      title: "Conta",
+      items: [
+        {
+          title: "Assinatura",
+          url: "/dashboard/billing",
+          icon: RiBankCardLine,
+        },
+      ],
+    },
+  ];
+
+  // Admin Section
+  if (role === "admin") {
+    navMain.push({
+      title: "Admin",
+      items: [
+        {
+          title: "Painel Admin",
+          url: "/dashboard/admin",
+          icon: RiDashboardLine,
+        },
+        {
+          title: "Produtos",
+          url: "/dashboard/admin/products",
+          icon: RiShoppingCart2Line,
+        },
+        {
+          title: "Licenças",
+          url: "/dashboard/admin/licenses",
+          icon: RiBankCardLine,
+        },
+      ],
+    });
+  }
+
   return {
-    navMain: [
-      {
-        title: "Plataforma",
-        items: [
-          {
-            title: "Visão Geral",
-            url: "/dashboard",
-            icon: RiDashboardLine,
-          },
-          {
-            title: "Downloads",
-            url: "/dashboard/downloads",
-            icon: RiDownloadCloudLine,
-          },
-          {
-            title: "Tutoriais",
-            url: "/dashboard/tutorials",
-            icon: RiBookOpenLine,
-          },
-        ],
-      },
-      {
-        title: "Conta",
-        items: [
-          {
-            title: "Assinatura",
-            url: "/dashboard/billing",
-            icon: RiBankCardLine,
-          },
-        ],
-      },
-    ],
+    navMain,
     navSecondary: [
       {
         title: "Configurações",

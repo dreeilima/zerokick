@@ -1,10 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -40,6 +37,10 @@ export default {
         card: {
           DEFAULT: "hsl(var(--color-card))",
           foreground: "hsl(var(--color-card-foreground))",
+        },
+        "welcome-banner": {
+          DEFAULT: "hsl(var(--welcome-banner))",
+          foreground: "hsl(var(--welcome-banner-foreground))",
         },
       },
       borderRadius: {

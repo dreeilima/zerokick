@@ -8,6 +8,7 @@
 import { db, schema } from "@/lib/db";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { bearer } from "better-auth/plugins";
 import type { GoogleProfile } from "better-auth/social-providers";
 
 // ============================================================================
@@ -59,6 +60,18 @@ export const auth = betterAuth({
     camelCase: true,
   }),
 
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        defaultValue: "user",
+      },
+    },
+  },
+
+  // Plugins
+  plugins: [bearer()],
+
   // Google OAuth (se configurado)
   socialProviders:
     googleClientId && googleClientSecret
@@ -96,6 +109,6 @@ export const auth = betterAuth({
 // Aviso em desenvolvimento se Google OAuth não estiver configurado
 if (!googleClientId && process.env.NODE_ENV === "development") {
   console.warn(
-    "[Auth] Google OAuth não configurado. Defina GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET."
+    "[Auth] Google OAuth não configurado. Defina GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET.",
   );
 }

@@ -25,6 +25,7 @@ export const user = pgTable("user", {
     withTimezone: true,
   }).notNull(),
   stripeCustomerId: text("stripeCustomerId"),
+  role: text("role").default("user").notNull(),
 });
 
 export const account = pgTable("account", {
@@ -146,8 +147,17 @@ export const licenses = pgTable("licenses", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  gameId: integer("game_id")
+    .notNull()
+    .references(() => games.id, { onDelete: "cascade" }),
   hwid: text("hwid"),
-  subscriptionTier: text("subscription_tier").notNull(), // "basic" | "pro" | "lifetime"
+  // Planos por jogo: "logitech", "logitech_premium", "logitech_premium_pro",
+  //                  "razer", "razer_premium", "razer_premium_pro",
+  //                  "universal_week", "universal_month", "universal_lifetime"
+  // Exemplo: usuário compra "logitech_premium_pro" para CS2 (gameId: 1)
+  //          se quiser Valorant, precisa comprar outro plano separado
+  subscriptionTier: text("subscription_tier").notNull(),
+  deviceType: text("device_type").notNull(), // "logitech" | "razer" | "universal"
   stripeSubscriptionId: text("stripe_subscription_id"),
   expiresAt: timestamp("expires_at", {
     mode: "date",
@@ -198,6 +208,82 @@ export const transactions = pgTable("transactions", {
     .defaultNow(),
 });
 
+// ===================== E-COMMERCE TABLES =====================
+
+export const products = pgTable("products", {
+  id: serial("id").primaryKey(),
+  gameId: integer("game_id")
+    .notNull()
+    .references(() => games.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description"),
+  imageUrl: text("image_url"),
+  videoUrl: text("video_url"),
+  basePrice: integer("base_price").notNull(), // in cents
+  active: boolean("active").default(true).notNull(),
+  createdAt: timestamp("created_at", {
+    mode: "date",
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", {
+    mode: "date",
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
+});
+
+export const productVariants = pgTable("product_variants", {
+  id: serial("id").primaryKey(),
+  productId: integer("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+  name: text("name").notNull(), // e.g. "Logitech - Premium"
+  type: text("type").notNull(), // "logitech" | "razer" | "universal"
+  interval: text("interval").notNull(), // "week" | "month" | "lifetime"
+  price: integer("price").notNull(), // in cents
+  stripePriceId: text("stripe_price_id"),
+  active: boolean("active").default(true).notNull(),
+});
+
+export const cart = pgTable("cart", {
+  id: text("id").primaryKey(), // UUID
+  userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
+  status: text("status").default("active").notNull(),
+  createdAt: timestamp("created_at", {
+    mode: "date",
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", {
+    mode: "date",
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
+});
+
+export const cartItems = pgTable("cart_items", {
+  id: serial("id").primaryKey(),
+  cartId: text("cart_id")
+    .notNull()
+    .references(() => cart.id, { onDelete: "cascade" }),
+  productVariantId: integer("product_variant_id")
+    .notNull()
+    .references(() => productVariants.id, { onDelete: "cascade" }),
+  quantity: integer("quantity").default(1).notNull(),
+  addedAt: timestamp("added_at", {
+    mode: "date",
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
+});
+
 // ===================== RELATIONS =====================
 
 export const userRelations = relations(user, ({ many }) => ({
@@ -239,6 +325,10 @@ export const licensesRelations = relations(licenses, ({ one }) => ({
     fields: [licenses.userId],
     references: [user.id],
   }),
+  game: one(games, {
+    fields: [licenses.gameId],
+    references: [games.id],
+  }),
 }));
 
 export const downloadsRelations = relations(downloads, ({ one }) => ({
@@ -259,6 +349,45 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
   }),
 }));
 
+// ===================== RELATIONS =====================
+
+export const productsRelations = relations(products, ({ one, many }) => ({
+  game: one(games, {
+    fields: [products.gameId],
+    references: [games.id],
+  }),
+  variants: many(productVariants),
+}));
+
+export const productVariantsRelations = relations(
+  productVariants,
+  ({ one }) => ({
+    product: one(products, {
+      fields: [productVariants.productId],
+      references: [products.id],
+    }),
+  }),
+);
+
+export const cartRelations = relations(cart, ({ one, many }) => ({
+  user: one(user, {
+    fields: [cart.userId],
+    references: [user.id],
+  }),
+  items: many(cartItems),
+}));
+
+export const cartItemsRelations = relations(cartItems, ({ one }) => ({
+  cart: one(cart, {
+    fields: [cartItems.cartId],
+    references: [cart.id],
+  }),
+  variant: one(productVariants, {
+    fields: [cartItems.productVariantId],
+    references: [productVariants.id],
+  }),
+}));
+
 // ===================== TYPES =====================
 
 export type User = typeof user.$inferSelect;
@@ -271,3 +400,7 @@ export type Script = typeof scripts.$inferSelect;
 export type License = typeof licenses.$inferSelect;
 export type Download = typeof downloads.$inferSelect;
 export type Transaction = typeof transactions.$inferSelect;
+export type Product = typeof products.$inferSelect;
+export type ProductVariant = typeof productVariants.$inferSelect;
+export type Cart = typeof cart.$inferSelect;
+export type CartItem = typeof cartItems.$inferSelect;

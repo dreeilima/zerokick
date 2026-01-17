@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
@@ -35,6 +34,14 @@ export default defineConfig(async () => ({
     watch: {
       // 3. tell Vite to ignore watching `src-tauri`
       ignored: ["**/src-tauri/**"],
+    },
+    // Proxy API requests to Next.js backend to avoid CORS in dev
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 }));

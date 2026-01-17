@@ -67,3 +67,25 @@ export async function getUserSession() {
 export async function getOptionalUserSession() {
   return auth.api.getSession({ headers: await headers() });
 }
+
+/**
+ * Checks if current user is admin
+ * @throws Redirects to /dashboard if not admin
+ */
+export async function checkAdmin() {
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  if (!session?.user) {
+    redirect("/login");
+  }
+
+  // Cast to any because the type definition might not have picked up 'role' yet
+  // or we extended it via BetterAuth config but typescript needs help or module augmentation
+  const userRole = (session.user as any).role;
+
+  if (userRole !== "admin") {
+    redirect("/dashboard");
+  }
+
+  return session.user;
+}

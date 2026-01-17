@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "zerokick-loader",
+  "productName": "ZeroKick Loader",
   "version": "0.1.0",
   "identifier": "com.andreilima.zerokick-loader",
   "build": {
@@ -12,9 +12,9 @@
   "app": {
     "windows": [
       {
-        "title": "zerokick-loader",
-        "width": 800,
-        "height": 600
+        "title": "ZeroKick Loader",
+        "width": 1024,
+        "height": 768
       }
     ],
     "security": {

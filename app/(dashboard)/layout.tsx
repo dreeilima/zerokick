@@ -1,9 +1,14 @@
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import { getUserSession } from "@/lib/auth/server";
 import { Separator } from "@/components/ui/separator";
 import { AnimatedThemeToggler } from "@/components/animated-theme-toggler";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { CartSheet } from "@/components/shop/cart-sheet";
 
 export default async function DashboardLayout({
   children,
@@ -22,13 +27,12 @@ export default async function DashboardLayout({
             <Separator orientation="vertical" className="mr-2 h-4" />
           </div>
           <div className="flex items-center gap-2 px-4">
+            <CartSheet />
             <AnimatedThemeToggler />
             <LanguageSwitcher />
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          {children}
-        </div>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

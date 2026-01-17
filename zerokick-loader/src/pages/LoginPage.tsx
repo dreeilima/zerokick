@@ -1,114 +1,160 @@
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { RiLockLine, RiMailLine } from "@remixicon/react";
+import { RiLoader4Line } from "@remixicon/react";
+import { apiClient } from "../lib/api-client";
+import { useAuthStore } from "../lib/store";
+import { Logo } from "../components/logo";
+import { AuthHeader } from "../components/auth/auth-header";
+import { AuthErrorAlert } from "../components/auth/auth-error-alert";
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+  FieldSeparator,
+  FieldDescription,
+} from "../components/ui/field";
+import { cn } from "../lib/utils";
+import AuthSidebar from "../components/auth/auth-sidebar";
 
 export function LoginPage() {
+  const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  async function handleLogin(e: FormEvent) {
     e.preventDefault();
+    setError("");
     setIsLoading(true);
 
     try {
-      // TODO: Implementar autenticação com backend
-      console.log("Login:", { email, password });
-      
-      // Simulação de delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // TODO: Salvar token e redirecionar para dashboard
-    } catch (error) {
-      console.error("Login error:", error);
+      const { user } = await apiClient.login(email, password);
+      login(user);
+      navigate("/dashboard");
+    } catch (err: any) {
+      console.error("Login Page Error:", err);
+      setError(err.message || "Erro ao fazer login");
     } finally {
       setIsLoading(false);
     }
-  };
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
-      <div className="w-full max-w-md space-y-6">
-        {/* Logo */}
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
-            ZeroKick
-          </h1>
-          <p className="text-muted-foreground">Loader v1.0.0</p>
+    <div className="bg-muted flex min-h-screen flex-col items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-sm md:max-w-4xl">
+        <div className={cn("flex flex-col gap-6")}>
+          <Logo
+            variant="split"
+            className="mb-6 justify-center md:justify-start"
+          />
+          <Card className="overflow-hidden p-0">
+            <CardContent className="grid gap-0 p-0 md:grid-cols-[1.05fr_0.95fr]">
+              <form
+                className="flex flex-col gap-6 p-6 md:p-8"
+                onSubmit={handleLogin}
+                noValidate
+              >
+                <FieldGroup className="gap-4">
+                  <AuthHeader
+                    title="Acessar Dashboard"
+                    description="Entre para gerenciar seus macros"
+                  />
+
+                  <AuthErrorAlert error={error} />
+
+                  <Field>
+                    <FieldLabel htmlFor="email">E-mail</FieldLabel>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="seu@email.com"
+                      autoComplete="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={cn(
+                        error &&
+                          "border-destructive focus-visible:ring-destructive",
+                      )}
+                      disabled={isLoading}
+                    />
+                  </Field>
+
+                  <Field>
+                    <div className="flex items-center">
+                      <FieldLabel htmlFor="password">Senha</FieldLabel>
+                    </div>
+                    <Input
+                      id="password"
+                      type="password"
+                      required
+                      placeholder="********"
+                      autoComplete="current-password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className={cn(
+                        error &&
+                          "border-destructive focus-visible:ring-destructive",
+                      )}
+                      disabled={isLoading}
+                    />
+                  </Field>
+
+                  <Field>
+                    <Button
+                      type="submit"
+                      disabled={isLoading}
+                      className="w-full"
+                    >
+                      {isLoading ? (
+                        <RiLoader4Line className="h-4 w-4 animate-spin" />
+                      ) : (
+                        "Entrar"
+                      )}
+                    </Button>
+                  </Field>
+
+                  <FieldSeparator className="my-2" />
+
+                  <Field>
+                    <Button variant="outline" className="w-full" disabled>
+                      Google (Em breve)
+                    </Button>
+                  </Field>
+
+                  <FieldDescription className="text-center">
+                    Não tem uma conta?{" "}
+                    <a
+                      href="http://localhost:3000/signup"
+                      target="_blank"
+                      className="underline underline-offset-4 text-primary hover:text-primary/80"
+                    >
+                      Inscreva-se
+                    </a>
+                  </FieldDescription>
+                </FieldGroup>
+              </form>
+
+              <AuthSidebar />
+            </CardContent>
+          </Card>
+
+          <FieldDescription className="text-center">
+            <a
+              href="http://localhost:3000"
+              target="_blank"
+              className="underline underline-offset-4 text-muted-foreground hover:text-foreground"
+            >
+              Voltar para o site
+            </a>
+          </FieldDescription>
         </div>
-
-        {/* Login Card */}
-        <Card className="border-primary/20">
-          <CardHeader>
-            <CardTitle>Bem-vindo de volta</CardTitle>
-            <CardDescription>
-              Entre com sua conta para acessar seus macros
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <div className="relative">
-                  <RiMailLine className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="seu@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password">Senha</Label>
-                <div className="relative">
-                  <RiLockLine className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10"
-                    required
-                  />
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isLoading}
-              >
-                {isLoading ? "Entrando..." : "Entrar"}
-              </Button>
-            </form>
-
-            <div className="mt-4 text-center text-sm text-muted-foreground">
-              Não tem uma conta?{" "}
-              <a
-                href="http://localhost:3000/auth/signup"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                Criar conta
-              </a>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Footer */}
-        <p className="text-center text-xs text-muted-foreground">
-          © 2026 ZeroKick. Todos os direitos reservados.
-        </p>
       </div>
     </div>
   );
